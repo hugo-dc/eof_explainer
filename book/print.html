@@ -1,0 +1,1219 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>EOF (Ethereum Object Format)</title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction_to_eof.html"><strong aria-hidden="true">1.</strong> Introduction to EOF</a></li><li class="chapter-item expanded "><a href="evm_object_format.html"><strong aria-hidden="true">2.</strong> EVM Object Format</a></li><li class="chapter-item expanded "><a href="eof_version_1.html"><strong aria-hidden="true">3.</strong> EOF Version 1</a></li><li class="chapter-item expanded "><a href="eof_benefits.html"><strong aria-hidden="true">4.</strong> EOF Benefits</a></li><li class="chapter-item expanded "><a href="#.html"><strong aria-hidden="true">5.</strong> Tests</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tests_eip_3540.html"><strong aria-hidden="true">5.1.</strong> Tests EIP-3540</a></li></ol></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">6.</strong> Glossary</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">EOF (Ethereum Object Format)</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction-to-eof"><a class="header" href="#introduction-to-eof">Introduction to EOF</a></h1>
+<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<p>Currently, on-chain deployed EVM bytecode contains no pre-defined structure.
+Code is typically validated in clients to the extend of <code>JUMPDEST</code> analysis at
+runtime, every single time prior to execution. This poses not only an
+overhead, but also a challenge for introducing new or deprecating old
+features.</p>
+<p>Ethereum Object Formats allows validating code during contract creation,
+allowing versioning without an additional version field in the account.
+Versioning is a useful tool for introducing or deprecating features, especially
+for larger changes (such as significant changes to control flow, or features
+like Account Abstraction), without affecting existing contracts.</p>
+<h2 id="notes"><a class="header" href="#notes">Notes</a></h2>
+<ul>
+<li>This document use <a href="https://tools.ietf.org/html/rfc2119">RFC2119</a> keywords.</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="evm-object-format"><a class="header" href="#evm-object-format">EVM Object Format</a></h1>
+<p>The general EVM Object Format as well as the first introduced version is
+proposed in <a href="https://eips.ethereum.org/EIPS/eip-3540">EIP-3540</a>, currently
+Considered For Inclussion in the <a href="https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/shanghai.md">Shanghai Network
+Update</a>.</p>
+<p>In this EIP an extensible and versioned contained format for the EVM (allowing
+easy introduction of <a href="./eof_benefits.html#a-non-exhaustive-list-of-proposed-changes-which-could-benefit-from-this-format">variety of changes in the
+future</a>),
+with once-off validation at <strong>deploy time</strong>.</p>
+<h2 id="eof-format-description"><a class="header" href="#eof-format-description">EOF Format Description</a></h2>
+<p>The container starts with the <a href="evm_object_format.html#eof-header">EOF header</a>, followed by at least
+one <a href="evm_object_format.html#sections">section header</a>.</p>
+<h3 id="eof-header"><a class="header" href="#eof-header">EOF Header</a></h3>
+<p>EVM code following the EVM Object format have the following structure:</p>
+<table><thead><tr><th>Description</th><th>Length</th><th>Value</th><th></th></tr></thead><tbody>
+<tr><td>magic</td><td>2-bytes</td><td><code>0xEF00</code></td><td></td></tr>
+<tr><td>version</td><td>1-byte</td><td><code>0x01</code>–<code>0xFF</code></td><td>EOF version number</td></tr>
+</tbody></table>
+<h4 id="magic"><a class="header" href="#magic">Magic</a></h4>
+<ol>
+<li>The first byte <code>0xEF</code> was chosen because it is reserved for this purpose by
+<a href="https://eips.ethereum.org/EIPS/eip-3541">EIP-3541</a> already deployed in
+<a href="https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/london.md">London Network Update</a>.</li>
+<li>The second byte <code>0x00</code> was chosen to avoid clashes with the three contracts
+which were deployed on <strong>Mainnet</strong>:
+<ul>
+<li><a href="https://etherscan.io/address/0xca7bf67ab492b49806e24b6e2e4ec105183caa01"><code>EFF09f918bf09f9fa9</code></a></li>
+<li><a href="https://etherscan.io/address/0x897da0f23ccc5e939ec7a53032c5e80fd1a947ec"><code>EF</code></a></li>
+<li><a href="https://etherscan.io/address/0x6e51d4d9be52b623a3d3a2fa8d3c5e3e01175cd0"><code>EF</code></a></li>
+</ul>
+</li>
+<li>No contracts starting with <code>0xEF</code> bytes exist on public testnets: Goerli,
+Ropsten, Rinkeby, Kovan and Sepolia at their London fork block.</li>
+</ol>
+<h4 id="version"><a class="header" href="#version">Version</a></h4>
+<p>EOF verstion range starts with 1. The version number 0 will never be used in
+EOF so we can call legacy code <em>EOF0</em>. Also implementations may use API where
+0 version number denotes legacy code.</p>
+<h3 id="sections"><a class="header" href="#sections">Sections</a></h3>
+<p>Each section header contains two fields, <code>section_kind</code> and <code>section_size</code>:</p>
+<table><thead><tr><th>Description</th><th>Length</th><th>Value</th><th></th></tr></thead><tbody>
+<tr><td><code>section_kind</code></td><td>1-byte</td><td><code>0x01</code>-<code>0xff</code></td><td>Encoded as a 8-bit unsigned number</td></tr>
+<tr><td><code>section_size</code></td><td>2-bytes</td><td><code>0x0001</code>-<code>0xffff</code></td><td>Encoded as a 16-bit unsigned big-endian number</td></tr>
+</tbody></table>
+<h2 id="eof-format-validation"><a class="header" href="#eof-format-validation">EOF Format Validation</a></h2>
+<p>When the specified block introducing the new Network Update is reached, code
+validation will be introduced at contract creation for contracts following the
+EVM Object Format.</p>
+<p>If <em><a href="./glossary.html#initcode">initcode</a></em> or <em><a href="./glossary.html#code">code</a></em> starts
+with the <a href="evm_object_format.html#eof-header"><code>magic</code></a>, it is considered to be EOF formatted and will
+undergo the following validations:</p>
+<ol>
+<li><a href="evm_object_format.html#eof-header"><code>version</code></a> MUST NOT be <code>0</code>.</li>
+<li><a href="evm_object_format.html#sections"><code>section_kind</code></a> MUST NOT be <code>0</code>. The value <code>0</code> is reserved for
+<em>section headers terminator</em> byte.</li>
+<li><a href="evm_object_format.html#sections"><code>section_size</code></a> MUST NOT be <code>0</code>. If a section is empty it section
+header MUST be omitted.</li>
+<li>There MUST be at least one section (and therefore section header).</li>
+<li>Section data MUST be equal to <code>section_size</code> declared in its header.</li>
+<li>Stray bytes outside of sections MUST NOT be present. This includes trailing
+bytes after the last section.</li>
+</ol>
+<p>Currently the only valid version is version <code>1</code>, any other version is invalid.</p>
+<h2 id="changes-to-contract-creation-semantics"><a class="header" href="#changes-to-contract-creation-semantics">Changes to contract creation semantics</a></h2>
+<ol>
+<li>If <em><a href="./glossary.html#initcode">initcode</a></em> has EOFn prefix it MUST be valid
+EOFn code for version <em>n</em>.</li>
+<li>If <em><a href="./glossary.html#code">code</a></em> has EOFn prefix it MUST be valid EOF code
+for version <em>n</em>.</li>
+</ol>
+<h2 id="contract-creation-restrictions"><a class="header" href="#contract-creation-restrictions">Contract Creation Restrictions</a></h2>
+<p>Since <em><a href="./glossary.html#initcode">initcode</a></em> and <em><a href="./glossary.html#code">code</a></em> are
+evaluated for EOF1 independently, the following combinations are allowed:</p>
+<ul>
+<li>Create transaction with EOFn <em>initcode</em> can deploy legacy contract</li>
+<li>Create transaction with legacy <em>initcode</em> can deploy EOFn contract</li>
+<li>EOFn contract can execute <code>CREATE</code> instruction with legacy <em>initcode</em> to
+create a new legacy contract</li>
+<li>Legacy contract can execute <code>CREATE</code> instruction with EOFn <em>initcode</em> to
+create a new EOFn contract</li>
+<li>Legacy contract can execute <code>CREATE</code> instruction with EOFn <em>initcode</em> to
+create a new legacy contract</li>
+</ul>
+<p>To limit the number of exotic bytecode version combination, additional
+restrictions are considered, but currently are not part of the specification:</p>
+<ol>
+<li>The EOF version of <em>initcode</em> must much the version of <em>code</em>.</li>
+<li>An EOF contract must not create legacy contracts.</li>
+</ol>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="eof-version-1"><a class="header" href="#eof-version-1">EOF Version 1</a></h1>
+<p><a href="https://eips.ethereum.org/EIPS/eip-3540">EIP-3540</a> allows <a href="./eof_benefits.html#code-and-data-separation">code and data
+separation</a>, by introducing two
+<a href="eof_version_1.html#section-kinds">section kinds</a>: code and data sections, as well as a sections
+header separator..</p>
+<h2 id="section-kinds"><a class="header" href="#section-kinds">Section Kinds</a></h2>
+<table><thead><tr><th>Section Kind</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>0</td><td><em>reserved for section headers terminator byte</em></td></tr>
+<tr><td>1</td><td>code</td></tr>
+<tr><td>2</td><td>data</td></tr>
+</tbody></table>
+<h2 id="eof-version-1-validation-rules"><a class="header" href="#eof-version-1-validation-rules">EOF Version 1 Validation Rules</a></h2>
+<p>In addition to general validation rules <a href="./evm_object_format.html#eof-format-validation">in the previous
+page</a>, EOF version 1 bytecode
+conforms to the following rules:</p>
+<ul>
+<li>Exactly one code section MUST be present</li>
+<li>The code section MUST be the first section</li>
+<li>A single data section MAY follow the code section.</li>
+</ul>
+<p>(<em>Remark</em>: Contract creation code SHOULD set the section size of the data so
+that the constructor argument fit it.)</p>
+<h2 id="changes-to-execution-semantics"><a class="header" href="#changes-to-execution-semantics">Changes to execution semantics</a></h2>
+<p>For clarity, the <em>container</em> referst to the complete account EOF code, while
+<em>code</em> refers to the contents of the code section only.</p>
+<ol>
+<li><code>JUMPDEST</code> analysis is only run on the <em>code</em>.</li>
+<li>Execution starts at the first byte of the <em>code</em>, and <code>PC</code> is set to 0.</li>
+<li>If <code>PC</code> goes outside of the code section bounds, execution aborts with
+failure.</li>
+<li><code>JUMP</code>/<code>JUMPI</code> uses an absolute offset within the <em>code</em>.</li>
+<li><code>CODECOPY</code>/<code>CODESIZE</code>/<code>EXTCODECOPY</code>/<code>EXTCODESIZE</code>/<code>EXTCODEHASH</code> keeps
+operating on the entire <em>container</em>.</li>
+<li>The input to <code>CREATE</code>/<code>CREATE2</code> is still the entire <em>container</em>.</li>
+</ol>
+<h2 id="data-only-contracts"><a class="header" href="#data-only-contracts">Data-only contracts</a></h2>
+<p>For EOF Data-only contracts, which purpose is to store data and not execution,
+<strong>EOF1 requires</strong> presence of a <strong>code section</strong> therefore the minimal overhead
+EOF data contract consist of a data section and one code section with a single
+instruction. We recommend to use <code>INVALID</code> (<code>0xfe</code>) instruction in this case. In total
+there are 11 additional bytes required:</p>
+<p><code>EF0001 01&lt;data size&gt; 00 FE &lt;data&gt;</code></p>
+<blockquote>
+<p><strong>note</strong>: I think this should be: <code>EF0001 010001 02&lt;data-size&gt; 00 FE &lt;data&gt;</code></p>
+</blockquote>
+<h2 id="test-cases"><a class="header" href="#test-cases">Test cases</a></h2>
+<p>You can modify and tests the folowing tests <a href="./tests_eip_3540.html">here</a>.</p>
+<h3 id="legacy-contracts"><a class="header" href="#legacy-contracts">Legacy contracts</a></h3>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">use std::collections::HashMap;
+</span><span class="boring">
+</span><span class="boring">struct Validator {
+</span><span class="boring">    magic: Vec&lt;u8&gt;,
+</span><span class="boring">    version: u8,
+</span><span class="boring">    s_terminator: u8,
+</span><span class="boring">    s_code: u8,
+</span><span class="boring">    s_data: u8,
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">impl Validator {
+</span><span class="boring">    fn new() -&gt; Validator {
+</span><span class="boring">
+</span><span class="boring">        let magic = from_hex(&quot;ef00&quot;);
+</span><span class="boring">        Validator {
+</span><span class="boring">            magic,
+</span><span class="boring">            version: 0x01,
+</span><span class="boring">            s_terminator: 0x00,
+</span><span class="boring">            s_code: 0x01, 
+</span><span class="boring">            s_data: 0x02,
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    fn is_eof(&amp;self, code: Vec&lt;u8&gt;) -&gt; bool {
+</span><span class="boring">        if code.len() &gt;= 2 {
+</span><span class="boring">            code[0..2] == self.magic[..]
+</span><span class="boring">        } else {
+</span><span class="boring">            false
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    fn validate_eof(&amp;self, code: Vec&lt;u8&gt;) -&gt; Result&lt;(), &amp;str&gt; {
+</span><span class="boring">        // Check version
+</span><span class="boring">        if code.len() &lt; 3 || code[2] != self.version {
+</span><span class="boring">            return Err(&quot;invalid version&quot;);
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        let mut pos = 3;
+</span><span class="boring">        let mut section_sizes: HashMap&lt;u8,u8&gt; = HashMap::new();
+</span><span class="boring">        section_sizes.insert(self.s_code, 0);
+</span><span class="boring">        section_sizes.insert(self.s_data, 0);
+</span><span class="boring">
+</span><span class="boring">        loop {
+</span><span class="boring">            // Terminator not found
+</span><span class="boring">            if pos &gt;= code.len() {
+</span><span class="boring">                return Err(&quot;no section terminator&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            let section_id = code[pos];
+</span><span class="boring">            pos += 1;
+</span><span class="boring">            if section_id == self.s_terminator {
+</span><span class="boring">                break;
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Disallow unknown sections
+</span><span class="boring">            if ! section_sizes.clone().into_keys().collect::&lt;Vec&lt;u8&gt;&gt;().contains(&amp;section_id) {
+</span><span class="boring">            //if section_id != self.s_code &amp;&amp; section_id != self.s_data {
+</span><span class="boring">                return Err(&quot;invalid section id&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Data section preceding code section
+</span><span class="boring">            if section_id == self.s_data &amp;&amp; section_sizes[&amp;self.s_code] == 0 {
+</span><span class="boring">                return Err(&quot;data section preceding code section&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Multiple sections with the same id
+</span><span class="boring">            if section_sizes[&amp;section_id] != 0 {
+</span><span class="boring">                return Err(&quot;multiple sections with same id&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Truncated section size
+</span><span class="boring">            if pos + 1 &gt;= code.len() {
+</span><span class="boring">                return Err(&quot;truncated section size&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            let inter = ((code[pos] as i32) &lt;&lt; (8 as u8)) | code[pos + 1] as i32;
+</span><span class="boring">            section_sizes.insert(section_id, inter as u8);
+</span><span class="boring">            pos += 2;
+</span><span class="boring">
+</span><span class="boring">            // Empty section
+</span><span class="boring">            if section_sizes[&amp;section_id] == 0 {
+</span><span class="boring">                return Err(&quot;empty section&quot;);
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        // Code section cannot be absent
+</span><span class="boring">        if section_sizes[&amp;self.s_code] == 0 {
+</span><span class="boring">            return Err(&quot;no code section&quot;);
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        // The entire container must be scanned
+</span><span class="boring">        if code.len() != (pos + section_sizes[&amp;self.s_code] as usize + section_sizes[&amp;self.s_data] as usize) {
+</span><span class="boring">            return Err(&quot;container size not equal to sum of section sizes&quot;);
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        return Ok(());
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    fn is_valid_container(&amp;self, code: &amp;Vec&lt;u8&gt;) -&gt; bool {
+</span><span class="boring">        if self.is_eof(code.to_vec()) {
+</span><span class="boring">            return self.validate_eof(code.to_vec()).is_ok()
+</span><span class="boring">        }
+</span><span class="boring">        return true;
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    test_legacy_contracts();
+</span><span class="boring">    test_no_eof_magic();
+</span><span class="boring">    test_eof1_container();
+</span><span class="boring">    println!(&quot;All tests were executed correctly&quot;);
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn from_hex(src: &amp;str) -&gt; Vec&lt;u8&gt; {
+</span><span class="boring">    let mut byte = String::new();
+</span><span class="boring">    let mut result: Vec&lt;u8&gt; = Vec::new();
+</span><span class="boring">
+</span><span class="boring">    for c in src.chars() {
+</span><span class="boring">        if c == ' ' {
+</span><span class="boring">            continue;
+</span><span class="boring">        }
+</span><span class="boring">        byte.push(c);
+</span><span class="boring">        if byte.len() == 2 {
+</span><span class="boring">            let byte_u8 = u8::from_str_radix(&amp;byte, 16).expect(&quot;Invalid Hex #String&quot;);
+</span><span class="boring">           result.push(byte_u8);
+</span><span class="boring">           byte = String::new();
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    if byte.len() != 0 {
+</span><span class="boring">        panic!(&quot;{}&quot;, &quot;Odd string `&quot;.to_owned() + src + &quot;`.&quot;);
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    return result;
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn is_invalid_with_error(code: Vec&lt;u8&gt;, expected_error: &amp;str) {
+</span><span class="boring">    let validator = Validator::new();
+</span><span class="boring">    let mut err_message: &amp;str = &quot;no-error&quot;;
+</span><span class="boring">
+</span><span class="boring">    let result = validator.validate_eof(code);
+</span><span class="boring">    let error = result.is_err();
+</span><span class="boring">    match result {
+</span><span class="boring">        Err(e) =&gt; err_message = e,
+</span><span class="boring">        Ok(_) =&gt; {}
+</span><span class="boring">    }
+</span><span class="boring">    let message = &quot;Expected error `&quot;.to_owned() + expected_error + &quot;`, found: `&quot; + err_message + &quot;`.&quot;;
+</span><span class="boring">    assert_eq!(error, true, &quot;{}&quot;, message);
+</span><span class="boring">    assert_eq!(expected_error == err_message, true, &quot;{}&quot;, message);
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn test_legacy_contracts() {
+</span><span class="boring">    let validator = Validator::new();
+</span><span class="boring">
+</span>    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;&quot;)), true);
+    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;00&quot;)), true);
+    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;ef&quot;)), true);
+<span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn test_no_eof_magic() {
+</span><span class="boring">    let validator = Validator::new();
+</span><span class="boring">    
+</span><span class="boring">    for i in 1..=255 {
+</span><span class="boring">        let mut code = vec![0xef];
+</span><span class="boring">        code.push(i);
+</span><span class="boring">        assert_eq!(validator.is_valid_container(&amp;code), true);
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn test_eof1_container() {
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef00&quot;), &quot;invalid version&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0001&quot;), &quot;no section terminator&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0000&quot;), &quot;invalid version&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0002 010001 00 fe&quot;), &quot;invalid version&quot;); // Valid except version
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0001 00&quot;), &quot;no code section&quot;); // Only terminator
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0001 010001 00 fe aabbccdd&quot;), &quot;container size not equal to sum of section sizes&quot;); // Trailing bytes
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101&quot;), &quot;truncated section size&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000102&quot;), &quot;truncated section size&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000103&quot;), &quot;invalid section id&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef00010100&quot;), &quot;truncated section size&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef00010100010200&quot;), &quot;truncated section size&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000000&quot;), &quot;empty section&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000102000000fe&quot;), &quot;empty section&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0001010001&quot;), &quot;no section terminator&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000100&quot;), &quot;container size not equal to sum of section sizes&quot;);  // Missing section contents
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000102000100aa&quot;), &quot;data section preceding code section&quot;);  // Only data section
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000101000100fefe&quot;), &quot;multiple sections with same id&quot;);  // Multiple code sections
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000102000102000100feaabb&quot;), &quot;multiple sections with same id&quot;);  // Multiple data sections
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000101000102000102000100fefeaabb&quot;), &quot;multiple sections with same id&quot;); // Multiple code and data sections
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000102000101000100aafe&quot;), &quot;data section preceding code section&quot;); 
+</span><span class="boring">}
+</span><span class="boring">
+</span></code></pre></pre>
+<h3 id="code-without-eof-magic"><a class="header" href="#code-without-eof-magic">Code without eof magic</a></h3>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">use std::collections::HashMap;
+</span><span class="boring">
+</span><span class="boring">struct Validator {
+</span><span class="boring">    magic: Vec&lt;u8&gt;,
+</span><span class="boring">    version: u8,
+</span><span class="boring">    s_terminator: u8,
+</span><span class="boring">    s_code: u8,
+</span><span class="boring">    s_data: u8,
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">impl Validator {
+</span><span class="boring">    fn new() -&gt; Validator {
+</span><span class="boring">
+</span><span class="boring">        let magic = from_hex(&quot;ef00&quot;);
+</span><span class="boring">        Validator {
+</span><span class="boring">            magic,
+</span><span class="boring">            version: 0x01,
+</span><span class="boring">            s_terminator: 0x00,
+</span><span class="boring">            s_code: 0x01, 
+</span><span class="boring">            s_data: 0x02,
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    fn is_eof(&amp;self, code: Vec&lt;u8&gt;) -&gt; bool {
+</span><span class="boring">        if code.len() &gt;= 2 {
+</span><span class="boring">            code[0..2] == self.magic[..]
+</span><span class="boring">        } else {
+</span><span class="boring">            false
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    fn validate_eof(&amp;self, code: Vec&lt;u8&gt;) -&gt; Result&lt;(), &amp;str&gt; {
+</span><span class="boring">        // Check version
+</span><span class="boring">        if code.len() &lt; 3 || code[2] != self.version {
+</span><span class="boring">            return Err(&quot;invalid version&quot;);
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        let mut pos = 3;
+</span><span class="boring">        let mut section_sizes: HashMap&lt;u8,u8&gt; = HashMap::new();
+</span><span class="boring">        section_sizes.insert(self.s_code, 0);
+</span><span class="boring">        section_sizes.insert(self.s_data, 0);
+</span><span class="boring">
+</span><span class="boring">        loop {
+</span><span class="boring">            // Terminator not found
+</span><span class="boring">            if pos &gt;= code.len() {
+</span><span class="boring">                return Err(&quot;no section terminator&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            let section_id = code[pos];
+</span><span class="boring">            pos += 1;
+</span><span class="boring">            if section_id == self.s_terminator {
+</span><span class="boring">                break;
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Disallow unknown sections
+</span><span class="boring">            if ! section_sizes.clone().into_keys().collect::&lt;Vec&lt;u8&gt;&gt;().contains(&amp;section_id) {
+</span><span class="boring">            //if section_id != self.s_code &amp;&amp; section_id != self.s_data {
+</span><span class="boring">                return Err(&quot;invalid section id&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Data section preceding code section
+</span><span class="boring">            if section_id == self.s_data &amp;&amp; section_sizes[&amp;self.s_code] == 0 {
+</span><span class="boring">                return Err(&quot;data section preceding code section&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Multiple sections with the same id
+</span><span class="boring">            if section_sizes[&amp;section_id] != 0 {
+</span><span class="boring">                return Err(&quot;multiple sections with same id&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Truncated section size
+</span><span class="boring">            if pos + 1 &gt;= code.len() {
+</span><span class="boring">                return Err(&quot;truncated section size&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            let inter = ((code[pos] as i32) &lt;&lt; (8 as u8)) | code[pos + 1] as i32;
+</span><span class="boring">            section_sizes.insert(section_id, inter as u8);
+</span><span class="boring">            pos += 2;
+</span><span class="boring">
+</span><span class="boring">            // Empty section
+</span><span class="boring">            if section_sizes[&amp;section_id] == 0 {
+</span><span class="boring">                return Err(&quot;empty section&quot;);
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        // Code section cannot be absent
+</span><span class="boring">        if section_sizes[&amp;self.s_code] == 0 {
+</span><span class="boring">            return Err(&quot;no code section&quot;);
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        // The entire container must be scanned
+</span><span class="boring">        if code.len() != (pos + section_sizes[&amp;self.s_code] as usize + section_sizes[&amp;self.s_data] as usize) {
+</span><span class="boring">            return Err(&quot;container size not equal to sum of section sizes&quot;);
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        return Ok(());
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    fn is_valid_container(&amp;self, code: &amp;Vec&lt;u8&gt;) -&gt; bool {
+</span><span class="boring">        if self.is_eof(code.to_vec()) {
+</span><span class="boring">            return self.validate_eof(code.to_vec()).is_ok()
+</span><span class="boring">        }
+</span><span class="boring">        return true;
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    test_legacy_contracts();
+</span><span class="boring">    test_no_eof_magic();
+</span><span class="boring">    test_eof1_container();
+</span><span class="boring">    println!(&quot;All tests were executed correctly&quot;);
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn from_hex(src: &amp;str) -&gt; Vec&lt;u8&gt; {
+</span><span class="boring">    let mut byte = String::new();
+</span><span class="boring">    let mut result: Vec&lt;u8&gt; = Vec::new();
+</span><span class="boring">
+</span><span class="boring">    for c in src.chars() {
+</span><span class="boring">        if c == ' ' {
+</span><span class="boring">            continue;
+</span><span class="boring">        }
+</span><span class="boring">        byte.push(c);
+</span><span class="boring">        if byte.len() == 2 {
+</span><span class="boring">            let byte_u8 = u8::from_str_radix(&amp;byte, 16).expect(&quot;Invalid Hex #String&quot;);
+</span><span class="boring">           result.push(byte_u8);
+</span><span class="boring">           byte = String::new();
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    if byte.len() != 0 {
+</span><span class="boring">        panic!(&quot;{}&quot;, &quot;Odd string `&quot;.to_owned() + src + &quot;`.&quot;);
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    return result;
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn is_invalid_with_error(code: Vec&lt;u8&gt;, expected_error: &amp;str) {
+</span><span class="boring">    let validator = Validator::new();
+</span><span class="boring">    let mut err_message: &amp;str = &quot;no-error&quot;;
+</span><span class="boring">
+</span><span class="boring">    let result = validator.validate_eof(code);
+</span><span class="boring">    let error = result.is_err();
+</span><span class="boring">    match result {
+</span><span class="boring">        Err(e) =&gt; err_message = e,
+</span><span class="boring">        Ok(_) =&gt; {}
+</span><span class="boring">    }
+</span><span class="boring">    let message = &quot;Expected error `&quot;.to_owned() + expected_error + &quot;`, found: `&quot; + err_message + &quot;`.&quot;;
+</span><span class="boring">    assert_eq!(error, true, &quot;{}&quot;, message);
+</span><span class="boring">    assert_eq!(expected_error == err_message, true, &quot;{}&quot;, message);
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn test_legacy_contracts() {
+</span><span class="boring">    let validator = Validator::new();
+</span><span class="boring">
+</span><span class="boring">    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;&quot;)), true);
+</span><span class="boring">    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;00&quot;)), true);
+</span><span class="boring">    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;ef&quot;)), true);
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn test_no_eof_magic() {
+</span><span class="boring">    let validator = Validator::new();
+</span><span class="boring">    
+</span>    for i in 1..=255 {
+        let mut code = vec![0xef];
+        code.push(i);
+        assert_eq!(validator.is_valid_container(&amp;code), true);
+    }
+<span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn test_eof1_container() {
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef00&quot;), &quot;invalid version&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0001&quot;), &quot;no section terminator&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0000&quot;), &quot;invalid version&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0002 010001 00 fe&quot;), &quot;invalid version&quot;); // Valid except version
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0001 00&quot;), &quot;no code section&quot;); // Only terminator
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0001 010001 00 fe aabbccdd&quot;), &quot;container size not equal to sum of section sizes&quot;); // Trailing bytes
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101&quot;), &quot;truncated section size&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000102&quot;), &quot;truncated section size&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000103&quot;), &quot;invalid section id&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef00010100&quot;), &quot;truncated section size&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef00010100010200&quot;), &quot;truncated section size&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000000&quot;), &quot;empty section&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000102000000fe&quot;), &quot;empty section&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef0001010001&quot;), &quot;no section terminator&quot;);
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000100&quot;), &quot;container size not equal to sum of section sizes&quot;);  // Missing section contents
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000102000100aa&quot;), &quot;data section preceding code section&quot;);  // Only data section
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000101000100fefe&quot;), &quot;multiple sections with same id&quot;);  // Multiple code sections
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000102000102000100feaabb&quot;), &quot;multiple sections with same id&quot;);  // Multiple data sections
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000101000101000102000102000100fefeaabb&quot;), &quot;multiple sections with same id&quot;); // Multiple code and data sections
+</span><span class="boring">    is_invalid_with_error(from_hex(&quot;ef000102000101000100aafe&quot;), &quot;data section preceding code section&quot;); 
+</span><span class="boring">}
+</span><span class="boring">
+</span></code></pre></pre>
+<h3 id="eof1-container"><a class="header" href="#eof1-container">EOF1 Container</a></h3>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">use std::collections::HashMap;
+</span><span class="boring">
+</span><span class="boring">struct Validator {
+</span><span class="boring">    magic: Vec&lt;u8&gt;,
+</span><span class="boring">    version: u8,
+</span><span class="boring">    s_terminator: u8,
+</span><span class="boring">    s_code: u8,
+</span><span class="boring">    s_data: u8,
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">impl Validator {
+</span><span class="boring">    fn new() -&gt; Validator {
+</span><span class="boring">
+</span><span class="boring">        let magic = from_hex(&quot;ef00&quot;);
+</span><span class="boring">        Validator {
+</span><span class="boring">            magic,
+</span><span class="boring">            version: 0x01,
+</span><span class="boring">            s_terminator: 0x00,
+</span><span class="boring">            s_code: 0x01, 
+</span><span class="boring">            s_data: 0x02,
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    fn is_eof(&amp;self, code: Vec&lt;u8&gt;) -&gt; bool {
+</span><span class="boring">        if code.len() &gt;= 2 {
+</span><span class="boring">            code[0..2] == self.magic[..]
+</span><span class="boring">        } else {
+</span><span class="boring">            false
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    fn validate_eof(&amp;self, code: Vec&lt;u8&gt;) -&gt; Result&lt;(), &amp;str&gt; {
+</span><span class="boring">        // Check version
+</span><span class="boring">        if code.len() &lt; 3 || code[2] != self.version {
+</span><span class="boring">            return Err(&quot;invalid version&quot;);
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        let mut pos = 3;
+</span><span class="boring">        let mut section_sizes: HashMap&lt;u8,u8&gt; = HashMap::new();
+</span><span class="boring">        section_sizes.insert(self.s_code, 0);
+</span><span class="boring">        section_sizes.insert(self.s_data, 0);
+</span><span class="boring">
+</span><span class="boring">        loop {
+</span><span class="boring">            // Terminator not found
+</span><span class="boring">            if pos &gt;= code.len() {
+</span><span class="boring">                return Err(&quot;no section terminator&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            let section_id = code[pos];
+</span><span class="boring">            pos += 1;
+</span><span class="boring">            if section_id == self.s_terminator {
+</span><span class="boring">                break;
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Disallow unknown sections
+</span><span class="boring">            if ! section_sizes.clone().into_keys().collect::&lt;Vec&lt;u8&gt;&gt;().contains(&amp;section_id) {
+</span><span class="boring">            //if section_id != self.s_code &amp;&amp; section_id != self.s_data {
+</span><span class="boring">                return Err(&quot;invalid section id&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Data section preceding code section
+</span><span class="boring">            if section_id == self.s_data &amp;&amp; section_sizes[&amp;self.s_code] == 0 {
+</span><span class="boring">                return Err(&quot;data section preceding code section&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Multiple sections with the same id
+</span><span class="boring">            if section_sizes[&amp;section_id] != 0 {
+</span><span class="boring">                return Err(&quot;multiple sections with same id&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            // Truncated section size
+</span><span class="boring">            if pos + 1 &gt;= code.len() {
+</span><span class="boring">                return Err(&quot;truncated section size&quot;);
+</span><span class="boring">            }
+</span><span class="boring">
+</span><span class="boring">            let inter = ((code[pos] as i32) &lt;&lt; (8 as u8)) | code[pos + 1] as i32;
+</span><span class="boring">            section_sizes.insert(section_id, inter as u8);
+</span><span class="boring">            pos += 2;
+</span><span class="boring">
+</span><span class="boring">            // Empty section
+</span><span class="boring">            if section_sizes[&amp;section_id] == 0 {
+</span><span class="boring">                return Err(&quot;empty section&quot;);
+</span><span class="boring">            }
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        // Code section cannot be absent
+</span><span class="boring">        if section_sizes[&amp;self.s_code] == 0 {
+</span><span class="boring">            return Err(&quot;no code section&quot;);
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        // The entire container must be scanned
+</span><span class="boring">        if code.len() != (pos + section_sizes[&amp;self.s_code] as usize + section_sizes[&amp;self.s_data] as usize) {
+</span><span class="boring">            return Err(&quot;container size not equal to sum of section sizes&quot;);
+</span><span class="boring">        }
+</span><span class="boring">
+</span><span class="boring">        return Ok(());
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    fn is_valid_container(&amp;self, code: &amp;Vec&lt;u8&gt;) -&gt; bool {
+</span><span class="boring">        if self.is_eof(code.to_vec()) {
+</span><span class="boring">            return self.validate_eof(code.to_vec()).is_ok()
+</span><span class="boring">        }
+</span><span class="boring">        return true;
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn main() {
+</span><span class="boring">    test_legacy_contracts();
+</span><span class="boring">    test_no_eof_magic();
+</span><span class="boring">    test_eof1_container();
+</span><span class="boring">    println!(&quot;All tests were executed correctly&quot;);
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn from_hex(src: &amp;str) -&gt; Vec&lt;u8&gt; {
+</span><span class="boring">    let mut byte = String::new();
+</span><span class="boring">    let mut result: Vec&lt;u8&gt; = Vec::new();
+</span><span class="boring">
+</span><span class="boring">    for c in src.chars() {
+</span><span class="boring">        if c == ' ' {
+</span><span class="boring">            continue;
+</span><span class="boring">        }
+</span><span class="boring">        byte.push(c);
+</span><span class="boring">        if byte.len() == 2 {
+</span><span class="boring">            let byte_u8 = u8::from_str_radix(&amp;byte, 16).expect(&quot;Invalid Hex #String&quot;);
+</span><span class="boring">           result.push(byte_u8);
+</span><span class="boring">           byte = String::new();
+</span><span class="boring">        }
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    if byte.len() != 0 {
+</span><span class="boring">        panic!(&quot;{}&quot;, &quot;Odd string `&quot;.to_owned() + src + &quot;`.&quot;);
+</span><span class="boring">    }
+</span><span class="boring">
+</span><span class="boring">    return result;
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn is_invalid_with_error(code: Vec&lt;u8&gt;, expected_error: &amp;str) {
+</span><span class="boring">    let validator = Validator::new();
+</span><span class="boring">    let mut err_message: &amp;str = &quot;no-error&quot;;
+</span><span class="boring">
+</span><span class="boring">    let result = validator.validate_eof(code);
+</span><span class="boring">    let error = result.is_err();
+</span><span class="boring">    match result {
+</span><span class="boring">        Err(e) =&gt; err_message = e,
+</span><span class="boring">        Ok(_) =&gt; {}
+</span><span class="boring">    }
+</span><span class="boring">    let message = &quot;Expected error `&quot;.to_owned() + expected_error + &quot;`, found: `&quot; + err_message + &quot;`.&quot;;
+</span><span class="boring">    assert_eq!(error, true, &quot;{}&quot;, message);
+</span><span class="boring">    assert_eq!(expected_error == err_message, true, &quot;{}&quot;, message);
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn test_legacy_contracts() {
+</span><span class="boring">    let validator = Validator::new();
+</span><span class="boring">
+</span><span class="boring">    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;&quot;)), true);
+</span><span class="boring">    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;00&quot;)), true);
+</span><span class="boring">    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;ef&quot;)), true);
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn test_no_eof_magic() {
+</span><span class="boring">    let validator = Validator::new();
+</span><span class="boring">    
+</span><span class="boring">    for i in 1..=255 {
+</span><span class="boring">        let mut code = vec![0xef];
+</span><span class="boring">        code.push(i);
+</span><span class="boring">        assert_eq!(validator.is_valid_container(&amp;code), true);
+</span><span class="boring">    }
+</span><span class="boring">}
+</span><span class="boring">
+</span><span class="boring">fn test_eof1_container() {
+</span>    is_invalid_with_error(from_hex(&quot;ef00&quot;), &quot;invalid version&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0001&quot;), &quot;no section terminator&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0000&quot;), &quot;invalid version&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0002 010001 00 fe&quot;), &quot;invalid version&quot;); // Valid except version
+    is_invalid_with_error(from_hex(&quot;ef0001 00&quot;), &quot;no code section&quot;); // Only terminator
+    is_invalid_with_error(from_hex(&quot;ef0001 010001 00 fe aabbccdd&quot;), &quot;container size not equal to sum of section sizes&quot;); // Trailing bytes
+    is_invalid_with_error(from_hex(&quot;ef000101&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000102&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000103&quot;), &quot;invalid section id&quot;);
+    is_invalid_with_error(from_hex(&quot;ef00010100&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef00010100010200&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000000&quot;), &quot;empty section&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000102000000fe&quot;), &quot;empty section&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0001010001&quot;), &quot;no section terminator&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000100&quot;), &quot;container size not equal to sum of section sizes&quot;);  // Missing section contents
+    is_invalid_with_error(from_hex(&quot;ef000102000100aa&quot;), &quot;data section preceding code section&quot;);  // Only data section
+    is_invalid_with_error(from_hex(&quot;ef000101000101000100fefe&quot;), &quot;multiple sections with same id&quot;);  // Multiple code sections
+    is_invalid_with_error(from_hex(&quot;ef000101000102000102000100feaabb&quot;), &quot;multiple sections with same id&quot;);  // Multiple data sections
+    is_invalid_with_error(from_hex(&quot;ef000101000101000102000102000100fefeaabb&quot;), &quot;multiple sections with same id&quot;); // Multiple code and data sections
+    is_invalid_with_error(from_hex(&quot;ef000102000101000100aafe&quot;), &quot;data section preceding code section&quot;); 
+<span class="boring">}
+</span><span class="boring">
+</span></code></pre></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="eof-benefits"><a class="header" href="#eof-benefits">EOF Benefits</a></h1>
+<h2 id="code-and-data-separation"><a class="header" href="#code-and-data-separation">Code and Data Separation</a></h2>
+<p>This separation is especially benefical for on-chain code validators (like
+those utilised by layer-2 scaling solutions, such as Optimism), because they
+can distinguish code and data (this includes deployment code and constructor
+arguments too).</p>
+<p>Currently they:</p>
+<ul>
+<li>a) Require changes prior to contract deployment</li>
+<li>b) Implement a fragile method</li>
+<li>c) Implement and expensive and restrictive code jump analysis.</li>
+</ul>
+<p>Code and data separation can result in ease of use and significant gas savings
+for such cases.</p>
+<h2 id="a-non-exhaustive-list-of-proposed-changes-which-could-benefit-from-this-format"><a class="header" href="#a-non-exhaustive-list-of-proposed-changes-which-could-benefit-from-this-format">A non-exhaustive list of proposed changes which could benefit from this format:</a></h2>
+<ul>
+<li>Including a <code>JUMPDEST</code>-table (to avoid analysis at exection time) and/or
+removing <code>JUMPDEST</code>s entirely.</li>
+<li>Introducing static jups (with relative addresses) and jump tables, and
+disallowing dynamic jumps at the same time.</li>
+<li>Requiring code section(s) to be terminated by <code>STOP</code>. (Assumptions like this
+can provide significant speed improvements, such as a speed up of ~7% seen
+in <a href="https://github.com/ethereum/evmone/pull/295">evmone</a>.</li>
+<li>Multi-byte opcodes without any workarounds.</li>
+<li>Representing functions as individual code sections instead of subroutines.</li>
+<li>Introducing special sections for different use cases, notably Account
+Abstraction.</li>
+</ul>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="tests"><a class="header" href="#tests">Tests</a></h1>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="tests-eip-3540"><a class="header" href="#tests-eip-3540">Tests EIP-3540</a></h1>
+<ul>
+<li>Legacy Contracts - <code>157:159</code>.</li>
+<li>No EOF Magic - <code>167:170</code>.</li>
+<li>EOF1 Container - <code>177:196</code>.</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust editable">use std::collections::HashMap;
+
+struct Validator {
+    magic: Vec&lt;u8&gt;,
+    version: u8,
+    s_terminator: u8,
+    s_code: u8,
+    s_data: u8,
+}
+
+impl Validator {
+    fn new() -&gt; Validator {
+
+        let magic = from_hex(&quot;ef00&quot;);
+        Validator {
+            magic,
+            version: 0x01,
+            s_terminator: 0x00,
+            s_code: 0x01, 
+            s_data: 0x02,
+        }
+    }
+
+    fn is_eof(&amp;self, code: Vec&lt;u8&gt;) -&gt; bool {
+        if code.len() &gt;= 2 {
+            code[0..2] == self.magic[..]
+        } else {
+            false
+        }
+    }
+
+    fn validate_eof(&amp;self, code: Vec&lt;u8&gt;) -&gt; Result&lt;(), &amp;str&gt; {
+        // Check version
+        if code.len() &lt; 3 || code[2] != self.version {
+            return Err(&quot;invalid version&quot;);
+        }
+
+        let mut pos = 3;
+        let mut section_sizes: HashMap&lt;u8,u8&gt; = HashMap::new();
+        section_sizes.insert(self.s_code, 0);
+        section_sizes.insert(self.s_data, 0);
+
+        loop {
+            // Terminator not found
+            if pos &gt;= code.len() {
+                return Err(&quot;no section terminator&quot;);
+            }
+
+            let section_id = code[pos];
+            pos += 1;
+            if section_id == self.s_terminator {
+                break;
+            }
+
+            // Disallow unknown sections
+            if ! section_sizes.clone().into_keys().collect::&lt;Vec&lt;u8&gt;&gt;().contains(&amp;section_id) {
+            //if section_id != self.s_code &amp;&amp; section_id != self.s_data {
+                return Err(&quot;invalid section id&quot;);
+            }
+
+            // Data section preceding code section
+            if section_id == self.s_data &amp;&amp; section_sizes[&amp;self.s_code] == 0 {
+                return Err(&quot;data section preceding code section&quot;);
+            }
+
+            // Multiple sections with the same id
+            if section_sizes[&amp;section_id] != 0 {
+                return Err(&quot;multiple sections with same id&quot;);
+            }
+
+            // Truncated section size
+            if pos + 1 &gt;= code.len() {
+                return Err(&quot;truncated section size&quot;);
+            }
+
+            let inter = ((code[pos] as i32) &lt;&lt; (8 as u8)) | code[pos + 1] as i32;
+            section_sizes.insert(section_id, inter as u8);
+            pos += 2;
+
+            // Empty section
+            if section_sizes[&amp;section_id] == 0 {
+                return Err(&quot;empty section&quot;);
+            }
+        }
+
+        // Code section cannot be absent
+        if section_sizes[&amp;self.s_code] == 0 {
+            return Err(&quot;no code section&quot;);
+        }
+
+        // The entire container must be scanned
+        if code.len() != (pos + section_sizes[&amp;self.s_code] as usize + section_sizes[&amp;self.s_data] as usize) {
+            return Err(&quot;container size not equal to sum of section sizes&quot;);
+        }
+
+        return Ok(());
+    }
+
+    fn is_valid_container(&amp;self, code: &amp;Vec&lt;u8&gt;) -&gt; bool {
+        if self.is_eof(code.to_vec()) {
+            return self.validate_eof(code.to_vec()).is_ok()
+        }
+        return true;
+    }
+}
+
+fn main() {
+    test_legacy_contracts();
+    test_no_eof_magic();
+    test_eof1_container();
+    println!(&quot;All tests were executed correctly&quot;);
+}
+
+fn from_hex(src: &amp;str) -&gt; Vec&lt;u8&gt; {
+    let mut byte = String::new();
+    let mut result: Vec&lt;u8&gt; = Vec::new();
+
+    for c in src.chars() {
+        if c == ' ' {
+            continue;
+        }
+        byte.push(c);
+        if byte.len() == 2 {
+            let byte_u8 = u8::from_str_radix(&amp;byte, 16).expect(&quot;Invalid Hex #String&quot;);
+           result.push(byte_u8);
+           byte = String::new();
+        }
+    }
+
+    if byte.len() != 0 {
+        panic!(&quot;{}&quot;, &quot;Odd string `&quot;.to_owned() + src + &quot;`.&quot;);
+    }
+
+    return result;
+}
+
+fn is_invalid_with_error(code: Vec&lt;u8&gt;, expected_error: &amp;str) {
+    let validator = Validator::new();
+    let mut err_message: &amp;str = &quot;no-error&quot;;
+
+    let result = validator.validate_eof(code);
+    let error = result.is_err();
+    match result {
+        Err(e) =&gt; err_message = e,
+        Ok(_) =&gt; {}
+    }
+    let message = &quot;Expected error `&quot;.to_owned() + expected_error + &quot;`, found: `&quot; + err_message + &quot;`.&quot;;
+    assert_eq!(error, true, &quot;{}&quot;, message);
+    assert_eq!(expected_error == err_message, true, &quot;{}&quot;, message);
+}
+
+fn test_legacy_contracts() {
+    let validator = Validator::new();
+
+// ANCHOR: legacy_contracts
+    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;&quot;)), true);
+    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;00&quot;)), true);
+    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;ef&quot;)), true);
+// ANCHOR_END: legacy_contracts
+}
+
+fn test_no_eof_magic() {
+    let validator = Validator::new();
+    
+// ANCHOR: no_eof_magic
+    for i in 1..=255 {
+        let mut code = vec![0xef];
+        code.push(i);
+        assert_eq!(validator.is_valid_container(&amp;code), true);
+    }
+// ANCHOR_END: no_eof_magic
+}
+
+fn test_eof1_container() {
+// ANCHOR: eof1_container
+    is_invalid_with_error(from_hex(&quot;ef00&quot;), &quot;invalid version&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0001&quot;), &quot;no section terminator&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0000&quot;), &quot;invalid version&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0002 010001 00 fe&quot;), &quot;invalid version&quot;); // Valid except version
+    is_invalid_with_error(from_hex(&quot;ef0001 00&quot;), &quot;no code section&quot;); // Only terminator
+    is_invalid_with_error(from_hex(&quot;ef0001 010001 00 fe aabbccdd&quot;), &quot;container size not equal to sum of section sizes&quot;); // Trailing bytes
+    is_invalid_with_error(from_hex(&quot;ef000101&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000102&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000103&quot;), &quot;invalid section id&quot;);
+    is_invalid_with_error(from_hex(&quot;ef00010100&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef00010100010200&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000000&quot;), &quot;empty section&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000102000000fe&quot;), &quot;empty section&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0001010001&quot;), &quot;no section terminator&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000100&quot;), &quot;container size not equal to sum of section sizes&quot;);  // Missing section contents
+    is_invalid_with_error(from_hex(&quot;ef000102000100aa&quot;), &quot;data section preceding code section&quot;);  // Only data section
+    is_invalid_with_error(from_hex(&quot;ef000101000101000100fefe&quot;), &quot;multiple sections with same id&quot;);  // Multiple code sections
+    is_invalid_with_error(from_hex(&quot;ef000101000102000102000100feaabb&quot;), &quot;multiple sections with same id&quot;);  // Multiple data sections
+    is_invalid_with_error(from_hex(&quot;ef000101000101000102000102000100fefeaabb&quot;), &quot;multiple sections with same id&quot;); // Multiple code and data sections
+    is_invalid_with_error(from_hex(&quot;ef000102000101000100aafe&quot;), &quot;data section preceding code section&quot;); 
+// ANCHOR_END: eof1_container
+}
+
+</code></pre></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="glossary"><a class="header" href="#glossary">Glossary</a></h1>
+<h2 id="code"><a class="header" href="#code">code</a></h2>
+<p>The code being returned in a *<a href="glossary.html#initcode">initcode</a> of a <em>create</em> transaction,
+<code>CREATE</code>, or <code>CREATE2</code> instructions.</p>
+<h2 id="initcode"><a class="header" href="#initcode">initcode</a></h2>
+<p>Code executed in the context of <em>create</em> transaction, <code>CREATE</code>, or
+<code>CREATE2</code> instructions.</p>
+<p>The <em>initcode</em> returns <em><a href="glossary.html#code">code</a></em> (via the <code>RETURN</code> instruction), which is
+inserted into the account.</p>
+<p>See section 7 (&quot;Contract Creation&quot; in the <a href="https://ethereum.github.io/yellowpaper/paper.pdf">Yellow
+Paper</a> for more information.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_line_numbers = true;
+        </script>
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+        <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>

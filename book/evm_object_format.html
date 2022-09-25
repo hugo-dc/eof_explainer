@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>EVM Object Format - EOF (Ethereum Object Format)</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction_to_eof.html"><strong aria-hidden="true">1.</strong> Introduction to EOF</a></li><li class="chapter-item expanded "><a href="evm_object_format.html" class="active"><strong aria-hidden="true">2.</strong> EVM Object Format</a></li><li class="chapter-item expanded "><a href="eof_version_1.html"><strong aria-hidden="true">3.</strong> EOF Version 1</a></li><li class="chapter-item expanded "><a href="eof_benefits.html"><strong aria-hidden="true">4.</strong> EOF Benefits</a></li><li class="chapter-item expanded "><a href="#.html"><strong aria-hidden="true">5.</strong> Tests</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tests_eip_3540.html"><strong aria-hidden="true">5.1.</strong> Tests EIP-3540</a></li></ol></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">6.</strong> Glossary</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">EOF (Ethereum Object Format)</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="evm-object-format"><a class="header" href="#evm-object-format">EVM Object Format</a></h1>
+<p>The general EVM Object Format as well as the first introduced version is
+proposed in <a href="https://eips.ethereum.org/EIPS/eip-3540">EIP-3540</a>, currently
+Considered For Inclussion in the <a href="https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/shanghai.md">Shanghai Network
+Update</a>.</p>
+<p>In this EIP an extensible and versioned contained format for the EVM (allowing
+easy introduction of <a href="./eof_benefits.html#a-non-exhaustive-list-of-proposed-changes-which-could-benefit-from-this-format">variety of changes in the
+future</a>),
+with once-off validation at <strong>deploy time</strong>.</p>
+<h2 id="eof-format-description"><a class="header" href="#eof-format-description">EOF Format Description</a></h2>
+<p>The container starts with the <a href="#eof-header">EOF header</a>, followed by at least
+one <a href="#sections">section header</a>.</p>
+<h3 id="eof-header"><a class="header" href="#eof-header">EOF Header</a></h3>
+<p>EVM code following the EVM Object format have the following structure:</p>
+<table><thead><tr><th>Description</th><th>Length</th><th>Value</th><th></th></tr></thead><tbody>
+<tr><td>magic</td><td>2-bytes</td><td><code>0xEF00</code></td><td></td></tr>
+<tr><td>version</td><td>1-byte</td><td><code>0x01</code>–<code>0xFF</code></td><td>EOF version number</td></tr>
+</tbody></table>
+<h4 id="magic"><a class="header" href="#magic">Magic</a></h4>
+<ol>
+<li>The first byte <code>0xEF</code> was chosen because it is reserved for this purpose by
+<a href="https://eips.ethereum.org/EIPS/eip-3541">EIP-3541</a> already deployed in
+<a href="https://github.com/ethereum/execution-specs/blob/master/network-upgrades/mainnet-upgrades/london.md">London Network Update</a>.</li>
+<li>The second byte <code>0x00</code> was chosen to avoid clashes with the three contracts
+which were deployed on <strong>Mainnet</strong>:
+<ul>
+<li><a href="https://etherscan.io/address/0xca7bf67ab492b49806e24b6e2e4ec105183caa01"><code>EFF09f918bf09f9fa9</code></a></li>
+<li><a href="https://etherscan.io/address/0x897da0f23ccc5e939ec7a53032c5e80fd1a947ec"><code>EF</code></a></li>
+<li><a href="https://etherscan.io/address/0x6e51d4d9be52b623a3d3a2fa8d3c5e3e01175cd0"><code>EF</code></a></li>
+</ul>
+</li>
+<li>No contracts starting with <code>0xEF</code> bytes exist on public testnets: Goerli,
+Ropsten, Rinkeby, Kovan and Sepolia at their London fork block.</li>
+</ol>
+<h4 id="version"><a class="header" href="#version">Version</a></h4>
+<p>EOF verstion range starts with 1. The version number 0 will never be used in
+EOF so we can call legacy code <em>EOF0</em>. Also implementations may use API where
+0 version number denotes legacy code.</p>
+<h3 id="sections"><a class="header" href="#sections">Sections</a></h3>
+<p>Each section header contains two fields, <code>section_kind</code> and <code>section_size</code>:</p>
+<table><thead><tr><th>Description</th><th>Length</th><th>Value</th><th></th></tr></thead><tbody>
+<tr><td><code>section_kind</code></td><td>1-byte</td><td><code>0x01</code>-<code>0xff</code></td><td>Encoded as a 8-bit unsigned number</td></tr>
+<tr><td><code>section_size</code></td><td>2-bytes</td><td><code>0x0001</code>-<code>0xffff</code></td><td>Encoded as a 16-bit unsigned big-endian number</td></tr>
+</tbody></table>
+<h2 id="eof-format-validation"><a class="header" href="#eof-format-validation">EOF Format Validation</a></h2>
+<p>When the specified block introducing the new Network Update is reached, code
+validation will be introduced at contract creation for contracts following the
+EVM Object Format.</p>
+<p>If <em><a href="./glossary.html#initcode">initcode</a></em> or <em><a href="./glossary.html#code">code</a></em> starts
+with the <a href="#eof-header"><code>magic</code></a>, it is considered to be EOF formatted and will
+undergo the following validations:</p>
+<ol>
+<li><a href="#eof-header"><code>version</code></a> MUST NOT be <code>0</code>.</li>
+<li><a href="#sections"><code>section_kind</code></a> MUST NOT be <code>0</code>. The value <code>0</code> is reserved for
+<em>section headers terminator</em> byte.</li>
+<li><a href="#sections"><code>section_size</code></a> MUST NOT be <code>0</code>. If a section is empty it section
+header MUST be omitted.</li>
+<li>There MUST be at least one section (and therefore section header).</li>
+<li>Section data MUST be equal to <code>section_size</code> declared in its header.</li>
+<li>Stray bytes outside of sections MUST NOT be present. This includes trailing
+bytes after the last section.</li>
+</ol>
+<p>Currently the only valid version is version <code>1</code>, any other version is invalid.</p>
+<h2 id="changes-to-contract-creation-semantics"><a class="header" href="#changes-to-contract-creation-semantics">Changes to contract creation semantics</a></h2>
+<ol>
+<li>If <em><a href="./glossary.html#initcode">initcode</a></em> has EOFn prefix it MUST be valid
+EOFn code for version <em>n</em>.</li>
+<li>If <em><a href="./glossary.html#code">code</a></em> has EOFn prefix it MUST be valid EOF code
+for version <em>n</em>.</li>
+</ol>
+<h2 id="contract-creation-restrictions"><a class="header" href="#contract-creation-restrictions">Contract Creation Restrictions</a></h2>
+<p>Since <em><a href="./glossary.html#initcode">initcode</a></em> and <em><a href="./glossary.html#code">code</a></em> are
+evaluated for EOF1 independently, the following combinations are allowed:</p>
+<ul>
+<li>Create transaction with EOFn <em>initcode</em> can deploy legacy contract</li>
+<li>Create transaction with legacy <em>initcode</em> can deploy EOFn contract</li>
+<li>EOFn contract can execute <code>CREATE</code> instruction with legacy <em>initcode</em> to
+create a new legacy contract</li>
+<li>Legacy contract can execute <code>CREATE</code> instruction with EOFn <em>initcode</em> to
+create a new EOFn contract</li>
+<li>Legacy contract can execute <code>CREATE</code> instruction with EOFn <em>initcode</em> to
+create a new legacy contract</li>
+</ul>
+<p>To limit the number of exotic bytecode version combination, additional
+restrictions are considered, but currently are not part of the specification:</p>
+<ol>
+<li>The EOF version of <em>initcode</em> must much the version of <em>code</em>.</li>
+<li>An EOF contract must not create legacy contracts.</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="introduction_to_eof.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="eof_version_1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="introduction_to_eof.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="eof_version_1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_line_numbers = true;
+        </script>
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+        <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Tests EIP-3540 - EOF (Ethereum Object Format)</title>
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="introduction_to_eof.html"><strong aria-hidden="true">1.</strong> Introduction to EOF</a></li><li class="chapter-item expanded "><a href="evm_object_format.html"><strong aria-hidden="true">2.</strong> EVM Object Format</a></li><li class="chapter-item expanded "><a href="eof_version_1.html"><strong aria-hidden="true">3.</strong> EOF Version 1</a></li><li class="chapter-item expanded "><a href="eof_benefits.html"><strong aria-hidden="true">4.</strong> EOF Benefits</a></li><li class="chapter-item expanded "><a href="#.html"><strong aria-hidden="true">5.</strong> Tests</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tests_eip_3540.html" class="active"><strong aria-hidden="true">5.1.</strong> Tests EIP-3540</a></li></ol></li><li class="chapter-item expanded "><a href="glossary.html"><strong aria-hidden="true">6.</strong> Glossary</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">EOF (Ethereum Object Format)</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                        
+
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="tests-eip-3540"><a class="header" href="#tests-eip-3540">Tests EIP-3540</a></h1>
+<ul>
+<li>Legacy Contracts - <code>157:159</code>.</li>
+<li>No EOF Magic - <code>167:170</code>.</li>
+<li>EOF1 Container - <code>177:196</code>.</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust editable">use std::collections::HashMap;
+
+struct Validator {
+    magic: Vec&lt;u8&gt;,
+    version: u8,
+    s_terminator: u8,
+    s_code: u8,
+    s_data: u8,
+}
+
+impl Validator {
+    fn new() -&gt; Validator {
+
+        let magic = from_hex(&quot;ef00&quot;);
+        Validator {
+            magic,
+            version: 0x01,
+            s_terminator: 0x00,
+            s_code: 0x01, 
+            s_data: 0x02,
+        }
+    }
+
+    fn is_eof(&amp;self, code: Vec&lt;u8&gt;) -&gt; bool {
+        if code.len() &gt;= 2 {
+            code[0..2] == self.magic[..]
+        } else {
+            false
+        }
+    }
+
+    fn validate_eof(&amp;self, code: Vec&lt;u8&gt;) -&gt; Result&lt;(), &amp;str&gt; {
+        // Check version
+        if code.len() &lt; 3 || code[2] != self.version {
+            return Err(&quot;invalid version&quot;);
+        }
+
+        let mut pos = 3;
+        let mut section_sizes: HashMap&lt;u8,u8&gt; = HashMap::new();
+        section_sizes.insert(self.s_code, 0);
+        section_sizes.insert(self.s_data, 0);
+
+        loop {
+            // Terminator not found
+            if pos &gt;= code.len() {
+                return Err(&quot;no section terminator&quot;);
+            }
+
+            let section_id = code[pos];
+            pos += 1;
+            if section_id == self.s_terminator {
+                break;
+            }
+
+            // Disallow unknown sections
+            if ! section_sizes.clone().into_keys().collect::&lt;Vec&lt;u8&gt;&gt;().contains(&amp;section_id) {
+            //if section_id != self.s_code &amp;&amp; section_id != self.s_data {
+                return Err(&quot;invalid section id&quot;);
+            }
+
+            // Data section preceding code section
+            if section_id == self.s_data &amp;&amp; section_sizes[&amp;self.s_code] == 0 {
+                return Err(&quot;data section preceding code section&quot;);
+            }
+
+            // Multiple sections with the same id
+            if section_sizes[&amp;section_id] != 0 {
+                return Err(&quot;multiple sections with same id&quot;);
+            }
+
+            // Truncated section size
+            if pos + 1 &gt;= code.len() {
+                return Err(&quot;truncated section size&quot;);
+            }
+
+            let inter = ((code[pos] as i32) &lt;&lt; (8 as u8)) | code[pos + 1] as i32;
+            section_sizes.insert(section_id, inter as u8);
+            pos += 2;
+
+            // Empty section
+            if section_sizes[&amp;section_id] == 0 {
+                return Err(&quot;empty section&quot;);
+            }
+        }
+
+        // Code section cannot be absent
+        if section_sizes[&amp;self.s_code] == 0 {
+            return Err(&quot;no code section&quot;);
+        }
+
+        // The entire container must be scanned
+        if code.len() != (pos + section_sizes[&amp;self.s_code] as usize + section_sizes[&amp;self.s_data] as usize) {
+            return Err(&quot;container size not equal to sum of section sizes&quot;);
+        }
+
+        return Ok(());
+    }
+
+    fn is_valid_container(&amp;self, code: &amp;Vec&lt;u8&gt;) -&gt; bool {
+        if self.is_eof(code.to_vec()) {
+            return self.validate_eof(code.to_vec()).is_ok()
+        }
+        return true;
+    }
+}
+
+fn main() {
+    test_legacy_contracts();
+    test_no_eof_magic();
+    test_eof1_container();
+    println!(&quot;All tests were executed correctly&quot;);
+}
+
+fn from_hex(src: &amp;str) -&gt; Vec&lt;u8&gt; {
+    let mut byte = String::new();
+    let mut result: Vec&lt;u8&gt; = Vec::new();
+
+    for c in src.chars() {
+        if c == ' ' {
+            continue;
+        }
+        byte.push(c);
+        if byte.len() == 2 {
+            let byte_u8 = u8::from_str_radix(&amp;byte, 16).expect(&quot;Invalid Hex #String&quot;);
+           result.push(byte_u8);
+           byte = String::new();
+        }
+    }
+
+    if byte.len() != 0 {
+        panic!(&quot;{}&quot;, &quot;Odd string `&quot;.to_owned() + src + &quot;`.&quot;);
+    }
+
+    return result;
+}
+
+fn is_invalid_with_error(code: Vec&lt;u8&gt;, expected_error: &amp;str) {
+    let validator = Validator::new();
+    let mut err_message: &amp;str = &quot;no-error&quot;;
+
+    let result = validator.validate_eof(code);
+    let error = result.is_err();
+    match result {
+        Err(e) =&gt; err_message = e,
+        Ok(_) =&gt; {}
+    }
+    let message = &quot;Expected error `&quot;.to_owned() + expected_error + &quot;`, found: `&quot; + err_message + &quot;`.&quot;;
+    assert_eq!(error, true, &quot;{}&quot;, message);
+    assert_eq!(expected_error == err_message, true, &quot;{}&quot;, message);
+}
+
+fn test_legacy_contracts() {
+    let validator = Validator::new();
+
+// ANCHOR: legacy_contracts
+    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;&quot;)), true);
+    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;00&quot;)), true);
+    assert_eq!(validator.is_valid_container(&amp;from_hex(&quot;ef&quot;)), true);
+// ANCHOR_END: legacy_contracts
+}
+
+fn test_no_eof_magic() {
+    let validator = Validator::new();
+    
+// ANCHOR: no_eof_magic
+    for i in 1..=255 {
+        let mut code = vec![0xef];
+        code.push(i);
+        assert_eq!(validator.is_valid_container(&amp;code), true);
+    }
+// ANCHOR_END: no_eof_magic
+}
+
+fn test_eof1_container() {
+// ANCHOR: eof1_container
+    is_invalid_with_error(from_hex(&quot;ef00&quot;), &quot;invalid version&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0001&quot;), &quot;no section terminator&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0000&quot;), &quot;invalid version&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0002 010001 00 fe&quot;), &quot;invalid version&quot;); // Valid except version
+    is_invalid_with_error(from_hex(&quot;ef0001 00&quot;), &quot;no code section&quot;); // Only terminator
+    is_invalid_with_error(from_hex(&quot;ef0001 010001 00 fe aabbccdd&quot;), &quot;container size not equal to sum of section sizes&quot;); // Trailing bytes
+    is_invalid_with_error(from_hex(&quot;ef000101&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000102&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000103&quot;), &quot;invalid section id&quot;);
+    is_invalid_with_error(from_hex(&quot;ef00010100&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef00010100010200&quot;), &quot;truncated section size&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000000&quot;), &quot;empty section&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000102000000fe&quot;), &quot;empty section&quot;);
+    is_invalid_with_error(from_hex(&quot;ef0001010001&quot;), &quot;no section terminator&quot;);
+    is_invalid_with_error(from_hex(&quot;ef000101000100&quot;), &quot;container size not equal to sum of section sizes&quot;);  // Missing section contents
+    is_invalid_with_error(from_hex(&quot;ef000102000100aa&quot;), &quot;data section preceding code section&quot;);  // Only data section
+    is_invalid_with_error(from_hex(&quot;ef000101000101000100fefe&quot;), &quot;multiple sections with same id&quot;);  // Multiple code sections
+    is_invalid_with_error(from_hex(&quot;ef000101000102000102000100feaabb&quot;), &quot;multiple sections with same id&quot;);  // Multiple data sections
+    is_invalid_with_error(from_hex(&quot;ef000101000101000102000102000100fefeaabb&quot;), &quot;multiple sections with same id&quot;); // Multiple code and data sections
+    is_invalid_with_error(from_hex(&quot;ef000102000101000100aafe&quot;), &quot;data section preceding code section&quot;); 
+// ANCHOR_END: eof1_container
+}
+
+</code></pre></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="#.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="glossary.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a rel="prev" href="#.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a rel="next" href="glossary.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_line_numbers = true;
+        </script>
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+        <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>

@@ -1,0 +1,11 @@
+[book]
+authors = ["Hugo De la cruz"]
+language = "en"
+multilingual = false
+src = "src"
+title = "EOF (Ethereum Object Format)"
+
+[output.html.playground]
+editable = true
+line-numbers = true
+
